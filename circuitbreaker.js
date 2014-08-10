@@ -88,6 +88,7 @@ CircuitBreaker.prototype._setState = function(state, next) {
   var self = this, 
       r = self._redisClient, 
       key = self._key,
+      change,
       bb = self._breakerbox,
       channel = [self._channel,"circuit",self.circuitName].join(":");
 
@@ -236,7 +237,6 @@ CircuitBreaker.prototype._calculateMetrics = function(next) {
     
     var bucket = self._getBucketKey(-1*n);
     r.hgetall(bucket, function(err, data) {
-
       if(data) {
         data.successes = +data.successes;
         data.failures = +data.failures;
@@ -275,28 +275,27 @@ CircuitBreaker.prototype._updateState = function() {
 
   var metrics = self._calculateMetrics(function(err, metrics) {
 
-      console.dir(metrics)
+    console.log(metrics);
 
-    if (self._state == CircuitBreaker.HALF_OPEN) {
+    if (self.state == CircuitBreaker.HALF_OPEN) {
 
       var lastCommandFailed = !metrics.lastSuccesses && metrics.errorCount > 0;
 
       if (lastCommandFailed) {        
         self._setState(CircuitBreaker.OPEN);
-      }
-      else {
+      } else {
         self._setState(CircuitBreaker.CLOSED);
-        self.onCircuitClose(metrics);
       }
     } else {
+
       var overErrorThreshold = metrics.errorPercentage > self.errorThreshold;
       var overVolumeThreshold = metrics.totalCount > self.volumeThreshold;
       var overThreshold = overVolumeThreshold && overErrorThreshold;
 
       if (overThreshold) {
         self._setState(CircuitBreaker.OPEN);
-        self.onCircuitOpen(metrics);
       }
+
     }
 
   });

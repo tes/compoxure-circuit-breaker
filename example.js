@@ -11,7 +11,7 @@ if (cluster.isMaster) {
 	var bb = new BreakerBox({key:'test'}, ready), variant = 1;
 
 	bb.on('tick', function(data) {
-	    console.log(data.pid + ": Circuit breaker tick");
+	    //console.log(data.pid + ": Circuit breaker tick");
 	})
 
 	bb.on('checklock', function(data) {
@@ -19,7 +19,7 @@ if (cluster.isMaster) {
 	})
 
 	bb.on('lock', function(data) {
-	    console.log(data.pid + ": Lock");
+	    //console.log(data.pid + ": Lock");
 	})
 
 	bb.on('unlock', function(data) {
@@ -27,12 +27,11 @@ if (cluster.isMaster) {
 	})
 
 	bb.on('open', function(circuit, data) {
-		console.log(process.pid + ": " + circuit + " " + data.state);
-		
+		console.log('OPEN ' + process.pid + ": " + circuit + " " + data.state);
 	})
 
 	bb.on('closed', function(circuit, data) {
-		console.log(process.pid + ": " + circuit + " " + data.state)
+		console.log('CLOSED ' + process.pid + ": " + circuit + " " + data.state)
 		variant = 1;
 	});
 
@@ -45,8 +44,7 @@ if (cluster.isMaster) {
 			setInterval(function() {
 				cb.run(function(success, failure) {
 					if(variant % 2 == 1) { failure() } else { success() };	
-				}, function() {
-					// console.log("Running fallback");
+				}, function() {					
 					variant = 2;
 				});
 			},200);
