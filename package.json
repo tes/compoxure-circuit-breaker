@@ -1,0 +1,31 @@
+{
+  "name": "compoxure-circuit-breaker",
+  "description": "Hystrix-like circuit breaker for JavaScript, backed by Redis.",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": {
+    "name": "TES Global",
+    "url": "http://www.tes.co.uk/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:TSLEducation/compoxure-circuit-breaker.git"
+  },
+  "scripts": {
+    "coveralls": "NODE_ENV=test mocha --require blanket --reporter mocha-lcov-reporter test/* | ./node_modules/coveralls/bin/coveralls.js",
+    "test": "mocha test/*"
+  },
+  "main": "circuit-breaker.js",
+  "dependencies": {
+    "async": "^0.9.0",
+    "chance": "^0.5.9",
+    "lodash": "^2.4.1",
+    "node-redis-warlock": "0.0.7",
+    "node-uuid": "^1.4.1",
+    "redis": "^0.12.0"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "mocha": "^1.21.4"
+  }
+}
