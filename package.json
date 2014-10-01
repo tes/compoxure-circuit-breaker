@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:TSLEducation/compoxure-circuit-breaker.git"
+    "url": "git@github.com:tes/compoxure-circuit-breaker.git"
   },
   "scripts": {
     "coveralls": "NODE_ENV=test mocha --require blanket --reporter mocha-lcov-reporter test/* | ./node_modules/coveralls/bin/coveralls.js",
